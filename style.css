@@ -22,6 +22,9 @@ body{
     font-family:  Helvetica, sans-serif;
 }
 
+input {
+    cursor: pointer;
+}
 /*__BUTTONS__*/
 
 .game-button{
@@ -33,6 +36,11 @@ body{
     font-style: italic;
     background: transparent;
     margin-right: 1.25rem;
+    cursor: pointer;
+    opacity: 1;
+}
+.game-button:hover{
+    opacity: 0.7;
 }
 
 .button{
@@ -43,6 +51,12 @@ body{
     font-weight: bold;
     background: transparent;
     margin-right: 1.25rem;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.button:hover{
+    opacity: 0.7;
 }
 
 /*__HEADER__*/
@@ -117,18 +131,35 @@ main {
 .game-types{
     margin-top: 1.25rem;
 }
+
 .lotofacil{
     border: 2px solid var(--purple);
     color: var(--purple);
 }
+
+.lotofacil-selected{
+    background-color: var(--purple);
+    color: white;
+}
+
 .megasena{
     border: 2px solid  var(--green);
     color:  var(--green);
 }
 
-.lotomania{
+.megasena-selected{
+    background-color: var(--green);
+    color: white;
+}
+
+.quina{
     border: 2px solid var(--orange);
     color: var(--orange);
+}
+
+.quina-selected{
+    background-color: var(--orange);
+    color: white;
 }
 
 .bet-title{
@@ -146,7 +177,7 @@ main {
     font-style: italic;
 }
 
-.bet-numbers-row{
+.bet-numbers{
     margin-top: 1.75rem;
 }
 
@@ -159,6 +190,7 @@ main {
     font-weight: bold;
     width: 4rem;
     height: 4rem;
+    margin : 0.6rem 0.6rem
 }
 
 .bet-options{

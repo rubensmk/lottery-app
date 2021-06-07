@@ -27,57 +27,19 @@
       <h1 class="title">NEW BET <span class="game-name">FOR MEGA SENA</span></h1>
       <p class="subtitle">Choose a game</p>
       <div class="game-types">
-        <button class="lotofacil game-button">Lotofácil</button>
-        <button class="megasena game-button">MegaSena</button>
-        <button class="lotomania game-button">LotoMania</button>
+        <button id="lotofacil" class="lotofacil game-button" onclick="getGames.lotofacil()">Lotofácil</button>
+        <button id="megasena" class="megasena game-button" onclick="getGames.megasena()">MegaSena</button>
+        <button id="quina" class="quina game-button" onclick="getGames.quina()">Quina</button>
       </div>
       <p class="bet-title">Fill your bet</p>
-      <span class="bet-description">Mark as many numbers as you want up to a maximum of 50. Win by hitting 15,
+      <span class="bet-description" id="description">Mark as many numbers as you want up to a maximum of 50. Win by
+        hitting 15,
         16, 17,</br> 18, 19, 20 or none of the 20 numbers drawn.</span>
-      <div class="bet-numbers-row">
-        <button class="bet-number">01</button>
-        <button class="bet-number">02</button>
-        <button class="bet-number">03</button>
-        <button class="bet-number">04</button>
-        <button class="bet-number">05</button>
-        <button class="bet-number">06</button>
-        <button class="bet-number">07</button>
-        <button class="bet-number">08</button>
-        <button class="bet-number">09</button>
-      </div>
-      <div class="bet-numbers-row">
-        <button class="bet-number">01</button>
-        <button class="bet-number">02</button>
-        <button class="bet-number">03</button>
-        <button class="bet-number">04</button>
-        <button class="bet-number">05</button>
-        <button class="bet-number">06</button>
-        <button class="bet-number">07</button>
-        <button class="bet-number">08</button>
-        <button class="bet-number">09</button>
-      </div>
-      <div class="bet-numbers-row">
-        <button class="bet-number">01</button>
-        <button class="bet-number">02</button>
-        <button class="bet-number">03</button>
-        <button class="bet-number">04</button>
-        <button class="bet-number">05</button>
-        <button class="bet-number">06</button>
-        <button class="bet-number">07</button>
-        <button class="bet-number">08</button>
-        <button class="bet-number">09</button>
-      </div>
-      <div class="bet-numbers-row">
-        <button class="bet-number">01</button>
-        <button class="bet-number">02</button>
-        <button class="bet-number">03</button>
-        <button class="bet-number">04</button>
-        <button class="bet-number">05</button>
-        <button class="bet-number">06</button>
-        <button class="bet-number">07</button>
-        <button class="bet-number">08</button>
-        <button class="bet-number">09</button>
-      </div>
+
+
+      <form id="bet-numbers" class="bet-numbers">
+
+      </form>
 
       <div class="bet-options">
         <button class="bet-complete button">Complete Game</button>
