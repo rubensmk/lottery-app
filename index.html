@@ -5,33 +5,31 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="index.css" type="text/css">
+  <link rel="stylesheet" href="style.css" type="text/css">
   <title>Lottery App</title>
 </head>
 
 <body>
 
   <header>
-    <div class="menu">
+    <nav class="menu">
       <h1 class="logo">TGL</h1>
       <strong class="home">Home</strong>
-    </div>
-    <div>
+    </nav>
+    <nav>
       <strong class="account">Account</strong>
-      <strong class="logout">
-        Logout
-      </strong>
-    </div>
+      <strong class="logout">Logout</strong>
+    </nav>
   </header>
 
-  <div class="container">
-    <section class="content">
+  <main>
+    <div id="choose-game">
       <h1 class="title">NEW BET <span class="game-name">FOR MEGA SENA</span></h1>
       <p class="subtitle">Choose a game</p>
       <div class="game-types">
-        <button class="lotofacil">Lotofácil</button>
-        <button class="megasena">MegaSena</button>
-        <button class="lotomania">LotoMania</button>
+        <button class="lotofacil game-button">Lotofácil</button>
+        <button class="megasena game-button">MegaSena</button>
+        <button class="lotomania game-button">LotoMania</button>
       </div>
       <p class="bet-title">Fill your bet</p>
       <span class="bet-description">Mark as many numbers as you want up to a maximum of 50. Win by hitting 15,
@@ -82,14 +80,14 @@
       </div>
 
       <div class="bet-options">
-        <button class="bet-complete">Complete Game</button>
-        <button class="bet-clear">Clear Game</button>
-        <button class="bet-add-cart">
+        <button class="bet-complete button">Complete Game</button>
+        <button class="bet-clear button">Clear Game</button>
+        <button class="bet-add-cart button">
           <img class="bet-cart-icon" src="assets/shopping-cart.svg" />
           Add to Cart
         </button>
       </div>
-    </section>
+    </div>
 
     <aside class="cart">
       <h1 class="cart-title">CART</h1>
@@ -127,11 +125,12 @@
       </button>
     </aside>
 
-  </div>
+  </main>
 
-  <footer class="company-footer">
+  <footer>
     <span class="company-info">Copyright 2020 Luby Software</span>
   </footer>
+  <script src="index.js"></script>
 </body>
 
 </html>
