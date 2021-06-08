@@ -108,9 +108,13 @@ main {
     margin: 5rem 9rem;
     display: flex;
     width: auto;
+    height: 48rem;
     justify-content: space-between;
 }
 
+#choose-game{
+    max-width: 80rem;
+}
 .title{
     color: var(--gray);
     font-size: 1.5rem;
@@ -190,7 +194,11 @@ main {
     font-weight: bold;
     width: 4rem;
     height: 4rem;
-    margin : 0.6rem 0.6rem
+    margin : 0.6rem 0.6rem;
+}
+
+.bet-number:disabled{
+    background: var(--green);
 }
 
 .bet-options{
@@ -228,7 +236,7 @@ main {
 .cart{
     border: 1px solid var(--border);
     border-radius: 0.6rem;
-    width: 20rem;
+    width: 22rem;
     height: 30rem;
 }
 
@@ -242,6 +250,10 @@ main {
     margin-left: 1.25rem;
 }
 
+.card-list{
+    width: 100%;
+    height: 20rem;
+}
 .cart-card{
     display: flex;
     margin-left: 1.2rem;
@@ -250,6 +262,7 @@ main {
 
 .cart-card-icon{
     margin-right: 0.9rem;
+    cursor: pointer;
 }
 .cart-card-content-lotofacil{
     display: flex;
@@ -304,6 +317,7 @@ main {
     margin-left: 1.25rem;
     display: flex;
     align-items: center;
+    margin-bottom: 2rem;
 
 }
 
@@ -332,7 +346,6 @@ main {
 .bet-save-button{
     width: 100%;
     height: 6rem;
-    margin-top: 6rem;
     border: 0;
     border-bottom-left-radius: 0.6rem;
     border-bottom-right-radius: 0.6rem;
@@ -365,31 +378,3 @@ footer{
     font-size: 0.9rem;
 }
 
-@media (max-width: 800px){
-    html{
-        font-size: 87.5%;
-    }
-    main{
-        display: grid;
-    }
-    .menu{
-        padding-right: 2rem;
-    }
-    .game-types{
-        display: grid;
-        gap: 0.5rem;
-    }
-
-    .game-button{
-        width: 10rem;
-        height: 3rem;
-    }
-    .bet-options{
-        display: grid;
-        gap: 1rem;
-    }
-    .bet-add-cart{
-        margin: 0;
-        margin-bottom: 2rem;
-    }
-}
