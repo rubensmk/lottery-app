@@ -1,5 +1,4 @@
-/*__GLOBAL__*/
-
+/* || Global */
 :root{
     --gray: #707070;
     --light-gray:#868686;
@@ -22,11 +21,11 @@ body{
     font-family:  Helvetica, sans-serif;
 }
 
-input {
+input, button {
     cursor: pointer;
 }
-/*__BUTTONS__*/
 
+/* || Buttons */
 .game-button{
     width: 7rem;
     height: 2rem;
@@ -42,7 +41,6 @@ input {
 .game-button:hover{
     opacity: 0.7;
 }
-
 .button{
     width: 10.25rem;
     height: 3.25rem;
@@ -51,16 +49,13 @@ input {
     font-weight: bold;
     background: transparent;
     margin-right: 1.25rem;
-    cursor: pointer;
     opacity: 1;
 }
-
 .button:hover{
     opacity: 0.7;
 }
 
-/*__HEADER__*/
-
+/* || Header */
 header{
     height: 5rem;
     display: flex;
@@ -68,12 +63,12 @@ header{
     align-items: center;
     border-bottom: 1px solid var(--border);
 }
-nav.menu{
+.menu{
     display: flex;
     align-items: center;
 }
 
-nav h1.logo{
+.logo{
     color:var(--gray);
     position: relative;
     top: 0.3rem;
@@ -84,26 +79,25 @@ nav h1.logo{
     border-bottom: 6px solid #B5C401;
     border-radius: 4px;
 }
-nav strong.home{
+.home{
     color: var(--gray);
     font-size: 1.3rem;
     font-style: italic;
 }
-nav strong.account{
+.account{
     color: var(--gray);
     margin-right: 3rem;
     font-size: 1.3rem;
     font-style: italic;
 }
-nav strong.logout{
+.logout{
     color: var(--gray);
     margin-right: 14rem;
     font-size: 1.3rem;
     font-style: italic;
 }
 
-/*__BET__*/
-
+/* || Bet */
 main {
     margin: 5rem 9rem;
     display: flex;
@@ -231,9 +225,9 @@ main {
     color: white;
 }
 
-/*__CART__*/
+/* || Cart */
 
-.cart{
+#cart{
     border: 1px solid var(--border);
     border-radius: 0.6rem;
     width: 22rem;
@@ -264,7 +258,7 @@ main {
     margin-right: 0.9rem;
     cursor: pointer;
 }
-.cart-card-content-lotofacil{
+.cart-card-lotofacil-content{
     display: flex;
     flex-direction: column;
     padding-left: 0.6rem;
@@ -272,11 +266,18 @@ main {
     border-radius: 0.4rem;
 }
 
-.cart-card-content-megasena{
+.cart-card-megasena-content{
     display: flex;
     flex-direction: column;
     padding-left: 0.6rem;
     border-left: 4px solid  var(--green);
+    border-radius: 0.4rem;
+}
+.cart-card-quina-content{
+    display: flex;
+    flex-direction: column;
+    padding-left: 0.6rem;
+    border-left: 4px solid  var(--orange);
     border-radius: 0.4rem;
 }
 
@@ -305,6 +306,14 @@ main {
     font-style: italic;
     margin-right: 0.9rem;
 }
+.cart-card-quina{
+    font-size: 1rem;
+    color:  var(--orange);
+    font-weight: bold;
+    font-style: italic;
+    margin-right: 0.9rem;
+}
+
 .cart-card-price{
     color:var(--light-gray);
     font-size: 0.9rem;
@@ -361,7 +370,7 @@ main {
     height: 1.5rem;
 }
 
-/*__FOOTER__*/
+/* || Footer */
 
 footer{
     background: var(--background);

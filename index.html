@@ -27,9 +27,9 @@
       <h1 class="title">NEW BET <span class="game-name">FOR MEGA SENA</span></h1>
       <p class="subtitle">Choose a game</p>
       <div class="game-types">
-        <button id="lotofacil" class="lotofacil game-button" onclick="getGames.lotofacil()">Lotofácil</button>
-        <button id="megasena" class="megasena game-button" onclick="getGames.megasena()">MegaSena</button>
-        <button id="quina" class="quina game-button" onclick="getGames.quina()">Quina</button>
+        <button id="lotofacil" class="lotofacil game-button" onclick="getGame.lotofacil()">Lotofácil</button>
+        <button id="megasena" class="megasena game-button" onclick="getGame.megasena()">MegaSena</button>
+        <button id="quina" class="quina game-button" onclick="getGame.quina()">Quina</button>
       </div>
       <p class="bet-title">Fill your bet</p>
       <span class="bet-description" id="description">Mark as many numbers as you want up to a maximum of 50. Win by
@@ -37,28 +37,28 @@
         16, 17,</br> 18, 19, 20 or none of the 20 numbers drawn.</span>
 
 
-      <form id="bet-numbers" class="bet-numbers" action="" onsubmit="Form.submit(event)">
+      <form id="bet-numbers" class="bet-numbers" action="">
 
       </form>
 
       <div class="bet-options">
-        <button class="bet-complete button" onclick="Form.completeGame()">Complete Game</button>
-        <button class="bet-clear button" onclick="Form.clearGame()">Clear Game</button>
-        <button class="bet-add-cart button" onclick="Form.submit()">
+        <button class="bet-complete button" onclick="Play.completeGame()">Complete Game</button>
+        <button class="bet-clear button" onclick="Play.clearGame()">Clear Game</button>
+        <button class="bet-add-cart button" onclick="Play.addToCart()">
           <img class="bet-cart-icon" src="assets/shopping-cart.svg" />
           Add to Cart
         </button>
       </div>
     </div>
 
-    <aside class="cart">
+    <aside id="cart">
       <h1 class="cart-title">CART</h1>
       <div class="card-list" id="card-list">
 
       </div>
       <div class="cart-total">
         <h1 class="total-title">CART <span class="total-text">TOTAL:</span></h1>
-        <p class="total-price">R$ 7,00</p>
+        <p class="total-price" id="total-price"></p>
       </div>
 
       <button class="bet-save-button">

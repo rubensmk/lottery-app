@@ -1,13 +1,25 @@
 const ajax = new XMLHttpRequest();
 const numbers = document.getElementById('bet-numbers');
 const cardList = document.getElementById('card-list');
+const totalPrice = document.getElementById('total-price');
+
 let data = []
 let selectedNumber = []
+let cart = []
 
-const Form = {
+const Utils = {
+    formatCurrency(value) {
+        return value = value.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        })
+    }
+}
+
+const Play = {
     number: document.querySelector('input#number'),
 
-    select(index, maxLimit) {
+    selectNumber(index, maxLimit) {
         let newEntry = index + 1
 
         if (selectedNumber.length >= maxLimit) {
@@ -19,15 +31,12 @@ const Form = {
         console.log(selectedNumber)
     },
 
-    clearGame() {
-        App.reload()
-    },
-
     completeGame() {
-        const min = 1;
-        const max = 25;
+        const min = 1
+        const max = data.range
+        const maxNumbers = data['max-number']
 
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < maxNumbers; i++) {
             let randomNum = Math.floor(Math.random() * max) + min;
             let check = selectedNumber.includes(randomNum);
 
@@ -45,117 +54,115 @@ const Form = {
                 }
             }
         }
-        console.log(selectedNumber)
     },
 
-    submit() {
+    clearGame() {
+        App.reload()
+    },
 
-        const spanNumbers = selectedNumber.sort((a, b) => a - b).join()
+    addToCart() {
 
-        cardList.innerHTML = `
-                            <div class="cart-card" id="card">
-                                <img src="assets/trash.svg" class="cart-card-icon" onclick="Form.delete()"/>
-                                    <div class="cart-card-content-lotofacil">
+        const listOfNumbers = selectedNumber.sort((a, b) => a - b).join()
+
+        let cardClass = ''
+        if (data.type === 'Lotofácil') {
+            cardClass = 'cart-card-lotofacil'
+        }
+        if (data.type === 'Mega-Sena') {
+            cardClass = 'cart-card-megasena'
+        }
+        if (data.type === 'Quina') {
+            cardClass = 'cart-card-quina'
+        }
+        cardList.innerHTML += `
+                            <div class="cart-card" id="card-${data['max-number']}">
+                                <img src="assets/trash.svg" class="cart-card-icon" onclick="Play.deleteCart(${data['max-number']})"/>
+                                    <div class="${cardClass}-content">
                                         <span class="cart-card-numbers">
-                                        ${spanNumbers}
+                                        ${listOfNumbers}
                                         </span>
                                         <div class="cart-card-game">
-                                        <strong class="cart-card-lotofacil">Lotofácil</strong>
-                                        <p class="cart-card-price">R$ 2,50</p>
+                                        <strong class="${cardClass}">${data.type}</strong>
+                                        <p class="cart-card-price">${Utils.formatCurrency(data.price)}</p>
                                         </div>
                                     </div>
                             </div>
                             `
+        cart.push({
+            id: data['max-number'],
+            price: data.price
+        })
+        this.calculateTotal()
     },
 
-    delete() {
-        const card = document.getElementById('card')
-        cardList.removeChild(card)
-        App.reload()
+    deleteCart(id) {
+        const item = document.getElementById(`card-${id}`)
+        item.parentNode.removeChild(item)
+        cart.map((item, index) => {
+            if (item.id === id) {
+                cart.splice(index, 1)
+            }
+        });
+        this.calculateTotal()
+    },
+
+    calculateTotal() {
+        let cartTotal = 0
+        cart.map(item => {
+            cartTotal += item.price
+            return cartTotal
+        })
+        totalPrice.innerHTML = Utils.formatCurrency(cartTotal)
     }
 }
 
-const getGames = {
+const getGame = {
+    getData(gameType) {
+        ajax.open('GET', 'games.json')
+        ajax.send()
+        ajax.addEventListener('readystatechange', () => {
+            if (ajax.readyState === 4 && ajax.status === 200) {
+                data = JSON.parse(ajax.responseText)
+                data = data.types[gameType]
+                this.listNumbers()
+            }
+        })
+    },
+    listNumbers() {
+        document.getElementById('description').innerHTML = data.description
+
+        numbers.innerHTML = ''
+        selectedNumber = []
+
+        for (let index = 0; index < data.range; index++) {
+            let html = `<input type="button" class="bet-number" value="${index + 1}" id="number" onclick="Play.selectNumber(${index}, ${data['max-number']})">`
+            numbers.innerHTML += html
+        }
+    },
     lotofacil() {
         document.getElementById('lotofacil').setAttribute('class', 'lotofacil game-button lotofacil-selected')
         document.getElementById('megasena').setAttribute('class', 'megasena game-button')
         document.getElementById('quina').setAttribute('class', 'quina game-button')
-        ajax.open('GET', 'games.json')
-        ajax.send()
-        ajax.addEventListener('readystatechange', () => {
-            if (ajax.readyState === 4 && ajax.status === 200) {
-                data = JSON.parse(ajax.responseText)
-                data = data.types[0]
-
-                document.getElementById('description').innerHTML = data.description
-
-                numbers.innerHTML = ''
-                selectedNumber = []
-
-                for (let index = 0; index < data.range; index++) {
-                    let html = `<input type="button" class="bet-number" value="${index + 1}" id="number" onclick="Form.select(${index}, ${data['max-number']})">`
-                    numbers.innerHTML += html
-                }
-
-            }
-        })
-
+        this.getData(0)
     },
     megasena() {
+        document.getElementById('megasena').setAttribute('class', 'megasena game-button megasena-selected')
         document.getElementById('lotofacil').setAttribute('class', 'lotofacil game-button')
         document.getElementById('quina').setAttribute('class', 'quina game-button')
-        document.getElementById('megasena').setAttribute('class', 'megasena game-button megasena-selected')
-        ajax.open('GET', 'games.json')
-        ajax.send()
-        ajax.addEventListener('readystatechange', () => {
-            if (ajax.readyState === 4 && ajax.status === 200) {
-                data = JSON.parse(ajax.responseText)
-                data = data.types[1]
-
-                document.getElementById('description').innerHTML = data.description
-
-                numbers.innerHTML = ''
-                selectedNumber = []
-
-                for (let index = 0; index < data.range; index++) {
-                    let html = `<input type="button" class="bet-number" value="${index + 1}" id="number" onclick="Form.select(${index}, ${data['max-number']})">`
-                    numbers.innerHTML += html
-                }
-
-            }
-        })
+        this.getData(1)
 
     },
     quina() {
+        document.getElementById('quina').setAttribute('class', 'quina game-button quina-selected')
         document.getElementById('lotofacil').setAttribute('class', 'lotofacil game-button')
         document.getElementById('megasena').setAttribute('class', 'megasena game-button')
-        document.getElementById('quina').setAttribute('class', 'quina game-button quina-selected')
-        ajax.open('GET', 'games.json')
-        ajax.send()
-        ajax.addEventListener('readystatechange', () => {
-            if (ajax.readyState === 4 && ajax.status === 200) {
-                data = JSON.parse(ajax.responseText)
-                data = data.types[2]
-
-                document.getElementById('description').innerHTML = data.description
-
-                numbers.innerHTML = ''
-                selectedNumber = []
-
-                for (let index = 0; index < data.range; index++) {
-                    let html = `<input type="button" class="bet-number" value="${index + 1}" id="number" onclick="Form.select(${index}, ${data['max-number']})">`
-                    numbers.innerHTML += html
-                }
-            }
-        })
-
-    },
+        this.getData(2)
+    }
 }
 
 const App = {
     init() {
-        console.log('iniciando')
-        getGames.lotofacil()
+        getGame.lotofacil()
     },
     reload() {
         this.init()
