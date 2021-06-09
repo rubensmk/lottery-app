@@ -23,7 +23,7 @@ const Play = {
         let newEntry = index + 1
 
         if (selectedNumber.length >= maxLimit) {
-            alert(`Já foram selecionados o número limite do jogo: ${maxLimit}, finalize adicionando ao carrinho. 🛒 `)
+            alert(`Já foram selecionados o número limite do jogo: ${maxLimit}, finalize adicionando ao carrinho. 🛒`)
         } else {
             selectedNumber.push(newEntry)
             number[index].disabled = true
@@ -33,26 +33,30 @@ const Play = {
 
     completeGame() {
         const min = 1
-        const max = data.range
-        const maxNumbers = data['max-number']
+        let max = data.range
+        let maxNumbers = data['max-number']
 
-        for (let i = 0; i < maxNumbers; i++) {
-            let randomNum = Math.floor(Math.random() * max) + min;
-            let check = selectedNumber.includes(randomNum);
+        if (selectedNumber.length === 0) {
+            for (let i = 0; i < maxNumbers; i++) {
+                let randomNum = Math.floor(Math.random() * max) + min;
+                let check = selectedNumber.includes(randomNum);
 
-            if (check === false) {
-                selectedNumber.push(randomNum);
-                number[randomNum - 1].disabled = true
-            } else {
-                while (check === true) {
-                    randomNum = Math.floor(Math.random() * max) + min;
-                    check = selectedNumber.includes(randomNum);
-                    if (check === false) {
-                        selectedNumber.push(randomNum);
-                        number[randomNum - 1].disabled = true
+                if (check === false) {
+                    selectedNumber.push(randomNum);
+                    number[randomNum - 1].disabled = true
+                } else {
+                    while (check === true) {
+                        randomNum = Math.floor(Math.random() * max) + min;
+                        check = selectedNumber.includes(randomNum);
+                        if (check === false) {
+                            selectedNumber.push(randomNum);
+                            number[randomNum - 1].disabled = true
+                        }
                     }
                 }
             }
+        } else {
+            alert(`Selecione manualmente o restante dos números (${maxNumbers - selectedNumber.length}) ou utilize "Clear Game" em seguinda "Complete Game"`)
         }
     },
 
