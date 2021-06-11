@@ -2,6 +2,8 @@ const ajax = new XMLHttpRequest();
 const numbers = document.getElementById('bet-numbers');
 const cardList = document.getElementById('card-list');
 const totalPrice = document.getElementById('total-price');
+const gamesList = document.getElementById('game-types');
+const gamesDescription = document.getElementById('description');
 
 let data = []
 let selectedNumber = []
@@ -18,6 +20,7 @@ const Utils = {
 
 const Play = {
     number: document.querySelector('input#number'),
+
 
     selectNumber(index, maxLimit) {
         let newEntry = index + 1
@@ -61,7 +64,10 @@ const Play = {
     },
 
     clearGame() {
-        App.reload()
+        selectedNumber.forEach(item => {
+            number[item - 1].disabled = false
+        })
+        selectedNumber = []
     },
 
     addToCart() {
@@ -121,52 +127,65 @@ const Play = {
 }
 
 const getGame = {
-    getData(gameType) {
+
+    getData() {
         ajax.open('GET', 'games.json')
         ajax.send()
         ajax.addEventListener('readystatechange', () => {
             if (ajax.readyState === 4 && ajax.status === 200) {
                 data = JSON.parse(ajax.responseText)
-                data = data.types[gameType]
-                this.listNumbers()
+                data.types.map(game => {
+                    let gameClass = ''
+                    if (game.type === 'Lotofácil') {
+                        gameClass = 'lotofacil'
+                    }
+                    if (game.type === 'Mega-Sena') {
+                        gameClass = 'megasena'
+                    }
+                    if (game.type === 'Quina') {
+                        gameClass = 'quina'
+                    }
+                    gamesList.innerHTML += `<button id="${game.type}" class="game-button ${gameClass}" onclick="getGame.pickGame(${game['max-number']}, ${game.range})">${game.type}</button>`
+                    gamesDescription.innerHTML = game.description
+                })
             }
         })
     },
-    listNumbers() {
-        document.getElementById('description').innerHTML = data.description
+    pickGame(maxNumber, range) {
 
+        if (maxNumber === 15) {
+            document.getElementById('Lotofácil').setAttribute('class', 'lotofacil game-button lotofacil-selected')
+            document.getElementById('Mega-Sena').setAttribute('class', 'megasena game-button')
+            document.getElementById('Quina').setAttribute('class', 'quina game-button')
+            this.renderNumbers(maxNumber, range)
+        }
+        if (maxNumber === 6) {
+            document.getElementById('Lotofácil').setAttribute('class', 'lotofacil game-button')
+            document.getElementById('Mega-Sena').setAttribute('class', 'megasena game-button megasena-selected')
+            document.getElementById('Quina').setAttribute('class', 'quina game-button')
+            this.renderNumbers(maxNumber, range)
+        }
+        if (maxNumber === 5) {
+            document.getElementById('Lotofácil').setAttribute('class', 'lotofacil game-button')
+            document.getElementById('Mega-Sena').setAttribute('class', 'megasena game-button')
+            document.getElementById('Quina').setAttribute('class', 'quina game-button quina-selected')
+            this.renderNumbers(maxNumber, range)
+        }
+    },
+    renderNumbers(maxNumber, maxRange) {
         numbers.innerHTML = ''
         selectedNumber = []
 
-        for (let index = 0; index < data.range; index++) {
-            let html = `<input type="button" class="bet-number" value="${index + 1}" id="number" onclick="Play.selectNumber(${index}, ${data['max-number']})">`
+        for (let index = 0; index < maxRange; index++) {
+            let html = `<input type="button" class="bet-number" value="${index + 1}" id="number" onclick="Play.selectNumber(${index},${maxNumber})">`
             numbers.innerHTML += html
         }
-    },
-    lotofacil() {
-        document.getElementById('lotofacil').setAttribute('class', 'lotofacil game-button lotofacil-selected')
-        document.getElementById('megasena').setAttribute('class', 'megasena game-button')
-        document.getElementById('quina').setAttribute('class', 'quina game-button')
-        this.getData(0)
-    },
-    megasena() {
-        document.getElementById('megasena').setAttribute('class', 'megasena game-button megasena-selected')
-        document.getElementById('lotofacil').setAttribute('class', 'lotofacil game-button')
-        document.getElementById('quina').setAttribute('class', 'quina game-button')
-        this.getData(1)
-
-    },
-    quina() {
-        document.getElementById('quina').setAttribute('class', 'quina game-button quina-selected')
-        document.getElementById('lotofacil').setAttribute('class', 'lotofacil game-button')
-        document.getElementById('megasena').setAttribute('class', 'megasena game-button')
-        this.getData(2)
     }
 }
 
 const App = {
     init() {
-        getGame.lotofacil()
+        getGame.getData()
     },
     reload() {
         this.init()
