@@ -26,6 +26,15 @@
       "max-number": 5,
       "color": "#F79C31",
       "min-cart-value": 30
+    },
+    {
+      "type": "Dupla-Sena",
+      "description": "Escolha 15 números dos 50 disponíveis na dupla-sena.",
+      "range": 50,
+      "price": 5,
+      "max-number": 15,
+      "color": "#610f11",
+      "min-cart-value": 30
     }
   ]
 }

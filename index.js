@@ -8,6 +8,10 @@ const gamesDescription = document.getElementById('description');
 let data = []
 let selectedNumber = []
 let cart = []
+let currentGameMaxNumbers = 0
+let currentGameRange = 0
+let currentGamePrice = 0
+let currentGameType = ''
 
 const Utils = {
     formatCurrency(value) {
@@ -21,51 +25,81 @@ const Utils = {
 const Play = {
     number: document.querySelector('input#number'),
 
-
     selectNumber(index, maxLimit) {
         let newEntry = index + 1
 
-        if (selectedNumber.length >= maxLimit) {
+        if (selectedNumber.includes(newEntry)) {
+            selectedNumber.splice(selectedNumber.indexOf(newEntry), 1)
+            selectedNumber.sort((a, b) => a - b)
+            number[index].classList.remove('bet-number-selected')
+        } else if (selectedNumber.length >= maxLimit) {
             alert(`Já foram selecionados o número limite do jogo: ${maxLimit}, finalize adicionando ao carrinho. 🛒`)
-        } else {
+        }
+        else {
             selectedNumber.push(newEntry)
-            number[index].disabled = true
+            selectedNumber.sort((a, b) => a - b)
+            number[index].classList.add('bet-number-selected')
         }
         console.log(selectedNumber)
     },
 
     completeGame() {
         const min = 1
-        let max = data.range
-        let maxNumbers = data['max-number']
+        let max = currentGameMaxNumbers
+        let range = currentGameRange
+        let currentArray = []
+
+        for (i = 1; i <= range; i++) {
+            currentArray.push(i)
+        }
 
         if (selectedNumber.length === 0) {
-            for (let i = 0; i < maxNumbers; i++) {
-                let randomNum = Math.floor(Math.random() * max) + min;
+            for (let i = 0; i < max; i++) {
+                let randomNum = Math.floor(Math.random() * range) + min;
                 let check = selectedNumber.includes(randomNum);
 
                 if (check === false) {
                     selectedNumber.push(randomNum);
-                    number[randomNum - 1].disabled = true
+                    number[randomNum - 1].classList.add('bet-number-selected')
                 } else {
                     while (check === true) {
-                        randomNum = Math.floor(Math.random() * max) + min;
+                        randomNum = Math.floor(Math.random() * range) + min;
                         check = selectedNumber.includes(randomNum);
                         if (check === false) {
                             selectedNumber.push(randomNum);
-                            number[randomNum - 1].disabled = true
+                            number[randomNum - 1].classList.add('bet-number-selected')
                         }
                     }
                 }
             }
-        } else {
-            alert(`Selecione manualmente o restante dos números (${maxNumbers - selectedNumber.length}) ou utilize "Clear Game" em seguinda "Complete Game"`)
+        }
+        if (selectedNumber.length > 0) {
+            let changedMax = max - selectedNumber.length
+            for (let i = 0; i < changedMax; i++) {
+                console.log('laço iniciado', i)
+                let randomNum = Math.floor(Math.random() * range) + min;
+                let check = selectedNumber.includes(randomNum);
+
+                if (check === false) {
+                    selectedNumber.push(randomNum);
+                    number[randomNum - 1].classList.add('bet-number-selected')
+                } else {
+                    while (check === true) {
+                        randomNum = Math.floor(Math.random() * range) + min;
+                        check = selectedNumber.includes(randomNum);
+                        if (check === false) {
+                            selectedNumber.push(randomNum);
+                            number[randomNum - 1].classList.add('bet-number-selected')
+                        }
+                    }
+                }
+            }
         }
     },
 
     clearGame() {
         selectedNumber.forEach(item => {
-            number[item - 1].disabled = false
+            number[item - 1].classList.remove('bet-number-selected')
         })
         selectedNumber = []
     },
@@ -75,32 +109,32 @@ const Play = {
         const listOfNumbers = selectedNumber.sort((a, b) => a - b).join()
 
         let cardClass = ''
-        if (data.type === 'Lotofácil') {
+        if (currentGameMaxNumbers === 15) {
             cardClass = 'cart-card-lotofacil'
         }
-        if (data.type === 'Mega-Sena') {
+        if (currentGameMaxNumbers === 6) {
             cardClass = 'cart-card-megasena'
         }
-        if (data.type === 'Quina') {
+        if (currentGameMaxNumbers === 5) {
             cardClass = 'cart-card-quina'
         }
         cardList.innerHTML += `
-                            <div class="cart-card" id="card-${data['max-number']}">
-                                <img src="assets/trash.svg" class="cart-card-icon" onclick="Play.deleteCart(${data['max-number']})"/>
+                            <div class="cart-card" id="card-${currentGameMaxNumbers}">
+                                <img src="assets/trash.svg" class="cart-card-icon" onclick="Play.deleteCart(${currentGameMaxNumbers})"/>
                                     <div class="${cardClass}-content">
                                         <span class="cart-card-numbers">
                                         ${listOfNumbers}
                                         </span>
                                         <div class="cart-card-game">
-                                        <strong class="${cardClass}">${data.type}</strong>
-                                        <p class="cart-card-price">${Utils.formatCurrency(data.price)}</p>
+                                        <strong class="${cardClass}">${currentGameType}</strong>
+                                        <p class="cart-card-price">${Utils.formatCurrency(currentGamePrice)}</p>
                                         </div>
                                     </div>
                             </div>
                             `
         cart.push({
-            id: data['max-number'],
-            price: data.price
+            id: currentGameMaxNumbers,
+            price: currentGamePrice
         })
         this.calculateTotal()
     },
@@ -135,42 +169,27 @@ const getGame = {
             if (ajax.readyState === 4 && ajax.status === 200) {
                 data = JSON.parse(ajax.responseText)
                 data.types.map(game => {
-                    let gameClass = ''
-                    if (game.type === 'Lotofácil') {
-                        gameClass = 'lotofacil'
-                    }
-                    if (game.type === 'Mega-Sena') {
-                        gameClass = 'megasena'
-                    }
-                    if (game.type === 'Quina') {
-                        gameClass = 'quina'
-                    }
-                    gamesList.innerHTML += `<button id="${game.type}" class="game-button ${gameClass}" onclick="getGame.pickGame(${game['max-number']}, ${game.range})">${game.type}</button>`
-                    gamesDescription.innerHTML = game.description
+                    gamesList.innerHTML +=
+                        `<button 
+                        id="${game.type}"
+                        style="border: 2px solid ${game.color}; color:${game.color}"
+                        class="game-button" 
+                        onclick="getGame.pickGame(${game['max-number']},${game.range},'${game.type}',${game.price},'${game.description}')">
+                        ${game.type}
+                      </button>`
+
                 })
             }
         })
     },
-    pickGame(maxNumber, range) {
+    pickGame(maxNumber, range, type, price, description) {
+        getGame.renderNumbers(maxNumber, range)
+        gamesDescription.innerHTML = description
+        currentGameMaxNumbers = maxNumber
+        currentGameRange = range
+        currentGameType = type
+        currentGamePrice = price
 
-        if (maxNumber === 15) {
-            document.getElementById('Lotofácil').setAttribute('class', 'lotofacil game-button lotofacil-selected')
-            document.getElementById('Mega-Sena').setAttribute('class', 'megasena game-button')
-            document.getElementById('Quina').setAttribute('class', 'quina game-button')
-            this.renderNumbers(maxNumber, range)
-        }
-        if (maxNumber === 6) {
-            document.getElementById('Lotofácil').setAttribute('class', 'lotofacil game-button')
-            document.getElementById('Mega-Sena').setAttribute('class', 'megasena game-button megasena-selected')
-            document.getElementById('Quina').setAttribute('class', 'quina game-button')
-            this.renderNumbers(maxNumber, range)
-        }
-        if (maxNumber === 5) {
-            document.getElementById('Lotofácil').setAttribute('class', 'lotofacil game-button')
-            document.getElementById('Mega-Sena').setAttribute('class', 'megasena game-button')
-            document.getElementById('Quina').setAttribute('class', 'quina game-button quina-selected')
-            this.renderNumbers(maxNumber, range)
-        }
     },
     renderNumbers(maxNumber, maxRange) {
         numbers.innerHTML = ''

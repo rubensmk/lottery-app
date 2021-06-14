@@ -130,36 +130,6 @@ main {
     margin-top: 1.25rem;
 }
 
-.lotofacil{
-    border: 2px solid var(--purple);
-    color: var(--purple);
-}
-
-.lotofacil-selected{
-    background-color: var(--purple);
-    color: white;
-}
-
-.megasena{
-    border: 2px solid  var(--green);
-    color:  var(--green);
-}
-
-.megasena-selected{
-    background-color: var(--green);
-    color: white;
-}
-
-.quina{
-    border: 2px solid var(--orange);
-    color: var(--orange);
-}
-
-.quina-selected{
-    background-color: var(--orange);
-    color: white;
-}
-
 .bet-title{
     color:var(--light-gray);
     font-size: 1.2rem;
@@ -191,7 +161,7 @@ main {
     margin : 0.6rem 0.6rem;
 }
 
-.bet-number:disabled{
+.bet-number-selected{
     background: var(--green);
 }
 
